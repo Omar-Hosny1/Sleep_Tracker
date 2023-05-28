@@ -25,7 +25,7 @@ class SleepNightAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
         if (item.sleepQuality <= 1) {
             holder.textView.setTextColor(Color.RED)
         } else {
-            // reset
+            //reset
             holder.textView.setTextColor(Color.BLACK)
         }
         holder.textView.text = item.sleepQuality.toString()
