@@ -5,13 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.trackmysleepquality.R
-import com.example.android.trackmysleepquality.convertDurationToFormatted
-import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemSleepNightBinding
 
-class SleepNightAdapter :
+class SleepNightAdapter(val clickListener: SleepNightListener) :
     ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDifCallback()) {
 
     // ViewGroup is the recycler view
@@ -23,7 +20,7 @@ class SleepNightAdapter :
     // recycling did here, and drawing
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
 
     class ViewHolder private constructor(val binding: ListItemSleepNightBinding) :
@@ -31,10 +28,12 @@ class SleepNightAdapter :
 
         // this fun to how to update the views
         fun bind(
-            item: SleepNight
+            item: SleepNight,
+            clickListener: SleepNightListener
         ) {
             binding.sleep = item
-            // force the binding object to evaluate the changes now
+            binding.clickListener = clickListener
+            // force the binding object to evaluate the changes immediately
             binding.executePendingBindings()
         }
 
@@ -57,4 +56,8 @@ class SleepNightDifCallback : DiffUtil.ItemCallback<SleepNight>() {
         // check the equality by checking the all vars in this data class
         return oldItem == newItem
     }
+}
+
+class SleepNightListener(val clickListener: (SleepId: Long) -> Unit) {
+    fun onClick(night: SleepNight) = clickListener(night.nightId)
 }

@@ -43,9 +43,10 @@ class SleepQualityFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
+        val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
+
         val arguments = SleepQualityFragmentArgs.fromBundle(arguments!!)
 
-        val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
 
         val viewModelFactory = SleepQualityViewModelFactory(arguments.sleepNightKey, dataSource)
 
